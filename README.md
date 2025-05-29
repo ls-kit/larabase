@@ -1,3 +1,10 @@
+## Workflow
+First: Finish user login/registration in Laravel.
+Second: Make sure your Baserow env/config and service code match your new table names.
+Third: Build out controllers and routes for course/lesson/quiz flow.
+Fourth: Add minimal progress tracking (just lesson_user).
+Fifth: Create simple Blade views to display data.
+
 ## data system:
 flowchart TD
   A[User (Browser)] -->|visits /register, /login| B[Laravel Auth] --> C[Auth Middleware]

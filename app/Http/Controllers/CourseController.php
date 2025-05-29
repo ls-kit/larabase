@@ -11,69 +11,70 @@ class CourseController extends Controller
 {
     public function index(BaserowService $baserow)
     {
-        $courses = $baserow->fetch('courses');
-        return view('courses.index', compact('courses'));
+
+   $courses = collect($baserow->fetch('content'))
+    ->filter(function($row) {
+        return in_array('course', $row['Type'] ?? []);
+    })
+    ->values();
+
+    // Pass the filtered list to the Blade view
+    return view('courses.index', compact('courses'));
     }
-public function show($courseId, BaserowService $baserow)
+
+    public function show($id, BaserowService $baserow)
 {
-    // 1) Grab IDs from config
-    $tableId = config('baserow.tables.modules');
-    $fieldId = config('baserow.fields.modules.course');
-    $url     = config('baserow.url');
+    $course = $baserow->find('content', $id);
 
-    // 2) Call the API with filter__field_{fieldId}__link_row_has
-    $response = Http::withHeaders([
-        'Authorization' => "Token " . config('baserow.token'),
-        'Content-Type'  => 'application/json',
-    ])->get("{$url}/rows/table/{$tableId}/", [
-        'user_field_names'                                     => 'true',
-        "filter__field_{$fieldId}__link_row_has"               => $courseId,
-        // you can also use link_row_has_not, link_row_contains, etc.
-    ]);
+    $allContent = collect($baserow->fetch('content'));
 
-    $response->throw();
-    $modules = $response->json()['results'] ?? [];
+    // Modules: filter by Type object
+    $modules = $allContent->filter(function($row) use ($id) {
+        return
+            ($row['Type']['value'] ?? null) === 'module' &&
+            isset($row['Parent']) &&
+            collect($row['Parent'])->pluck('id')->contains((int)$id);
+    })->sortBy('Order')->values();
 
-    // 3) Fetch the course for its name
-    $course  = $baserow->find('courses', $courseId);
+    // Lessons: filter by Type object and module ids
+    $moduleIds = $modules->pluck('id')->all();
+    $lessons = $allContent->filter(function($row) use ($moduleIds) {
+        return
+            ($row['Type']['value'] ?? null) === 'lesson' &&
+            isset($row['Parent']) &&
+            collect($row['Parent'])->pluck('id')->intersect($moduleIds)->isNotEmpty();
+    })->sortBy('Order')->values();
 
-    return view('courses.show', compact('course','modules'));
+    $lessonIds = $lessons->pluck('id')->all();
+
+    // Fetch all quizzes (and filter by linked lesson id)
+    $allQuizzes = collect($baserow->fetch('quizzes'));
+    $quizzes = $allQuizzes->filter(function($q) use ($lessonIds) {
+        if (!isset($q['Lesson'])) return false;
+        foreach ($q['Lesson'] as $lesson) {
+            if (isset($lesson['id']) && in_array($lesson['id'], $lessonIds)) {
+                return true;
+            }
+        }
+        return false;
+    })->sortBy('Order')->values();
+
+    $quizIds = $quizzes->pluck('id')->all();
+
+    // Questions: filter by linked quiz id (adjust filter if your field structure is different)
+    $allQuestions = collect($baserow->fetch('questions'));
+    $questions = $allQuestions->filter(function($q) use ($quizIds) {
+        if (!isset($q['Quiz'])) return false;
+        foreach ($q['Quiz'] as $quiz) {
+            if (isset($quiz['id']) && in_array($quiz['id'], $quizIds)) {
+                return true;
+            }
+        }
+        return false;
+    })->values();
+
+    return view('courses.show', compact('course', 'modules', 'lessons', 'quizzes', 'questions'));
 }
 
-
-
-    // public function show($courseId, BaserowService $baserow)
-    // {
-    //     $course = $baserow->find('courses', $courseId);
-    //     return view('courses.show', compact('course'));
-    // }
-    // public function show($courseId, BaserowService $baserow)
-    // {
-    //     // fetch modules/lessons/tasks
-    //     $modules = collect($baserow->fetch('modules'))->where('course', $courseId);
-    //     return view('courses.show', compact('modules', 'courseId'));
-    // }
-    // public function show(string $table, int $id)
-    // {
-    //     $row = $this->baserow->find($table, $id);
-    //     return view('crud.show', compact('row', 'table'));
-    // }
-
-    public function lesson($lessonId, BaserowService $baserow)
-    {
-        $lesson = collect($baserow->fetch('lessons'))->firstWhere('id', $lessonId);
-        $tasks  = collect($baserow->fetch('tasks'))->where('lesson', $lessonId);
-        return view('courses.lesson', compact('lesson', 'tasks'));
-    }
-
-    public function completeTask($taskId)
-    {
-        $userId = Auth::id();
-        Progress::updateOrCreate(
-            ['user_id' => $userId, 'task_id' => $taskId],
-            ['completed' => true]
-        );
-        return back();
-    }
 
 }

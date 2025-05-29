@@ -5,8 +5,9 @@ return [
     'token' => env('BASEROW_API_TOKEN'),
     'url'   => env('BASEROW_API_URL'),
     'tables' => [
-        'courses' => env('COURSES_TABLE_ID'),
-        'modules' => env('CUSER_TABLE_ID'),
+        'content' => env('CONTENT_TABLE_ID'),
+        'quizzes' => env('QUIZZES_TABLE_ID'),
+        'questions' => env('QUESTIONS_TABLE_ID'),
     ],
     // 'tables' => collect($_ENV)
     //     ->filter(function($value, $key) { return Str::startsWith($key, 'BASEROW_TABLE_'); })

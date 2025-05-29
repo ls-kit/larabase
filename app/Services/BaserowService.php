@@ -34,7 +34,7 @@ class BaserowService
         $response->throw(); // throws on 4xx/5xx
 
         return $response->json()['results'] ?? [];
-    }
+    }   
 
 
     public function create(string $table, array $data)

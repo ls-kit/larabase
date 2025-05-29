@@ -8,7 +8,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\BaserowCrudController;
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/courses', [CourseController::class, 'index']);
+    Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
     Route::get('/courses/{id}', [CourseController::class, 'show']);
     Route::get('/lessons/{id}', [CourseController::class, 'lesson']);
     Route::post('/tasks/{id}/complete', [CourseController::class, 'completeTask']);
