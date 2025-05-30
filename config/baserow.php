@@ -8,6 +8,7 @@ return [
         'content' => env('CONTENT_TABLE_ID'),
         'quizzes' => env('QUIZZES_TABLE_ID'),
         'questions' => env('QUESTIONS_TABLE_ID'),
+        'payments' => env('PAYMENT_TABLE_ID'),
     ],
     // 'tables' => collect($_ENV)
     //     ->filter(function($value, $key) { return Str::startsWith($key, 'BASEROW_TABLE_'); })

@@ -1,90 +1,105 @@
 @extends('layouts.app')
 @section('content')
 
-<!-- {{-- Debug modules --}}
-<pre>Modules: {{ print_r($modules->toArray(), true) }}</pre>
+@php
+    $lockLessonsUntilPreviousComplete = true;
+    $requireAdminApproval = true;
 
-{{-- Debug lessons --}}
-<pre>Lessons: {{ print_r($lessons->toArray(), true) }}</pre>
+    // Calculate total points for this course by summing lesson points
+    $totalPoints = $lessons->sum(function($l) {
+        return (float)($l['Lesson Points'] ?? 0);
+    });
+@endphp
 
-{{-- Debug quizzes --}}
-<pre>Quizzes: {{ print_r($quizzes->toArray(), true) }}</pre>
+<h1 class="text-2xl font-bold mb-4">{{ $course['Title'] }}</h1>
+<p>{{ $course['Description'] ?? '' }}</p>
 
-{{-- Debug questions --}}
-<pre>Questions: {{ print_r($questions->toArray(), true) }}</pre> -->
+{{-- Show price/free and total points --}}
+<div class="mb-6">
+    <span class="inline-block px-3 py-1 rounded bg-blue-50 text-blue-700 font-semibold mr-4">
+        {{ $course['Price'] > 0 ? 'Price: ' . $course['Price'] . '৳' : 'Free' }}
+    </span>
+    <span class="inline-block px-3 py-1 rounded bg-green-50 text-green-700 font-semibold">
+        Total Points: {{ $totalPoints }}
+    </span>
+</div>
 
-
-  <h1 class="text-2xl font-bold mb-4">{{ $course['Title'] }}</h1>
-  <p>{{ $course['Description'] ?? '' }}</p>
-
-  <h2 class="text-xl font-semibold mt-6">Modules</h2>
-  @foreach($modules as $module)
-    <div class="mb-4 p-2 border rounded">
-      <h3 class="font-bold">{{ $module['Title'] }}</h3>
-      <ul class="list-disc ml-4">
-        {{-- Lessons for this module --}}
-        @foreach($lessons->filter(function($lesson) use ($module) {
-            if (!isset($lesson['Parent'])) return false;
-            foreach ($lesson['Parent'] as $parent) {
-                if (isset($parent['id']) && $parent['id'] == $module['id']) {
-                    return true;
-                }
-            }
-            return false;
-        }) as $lesson)
-          <li class="mb-2">
-            <strong>{{ $lesson['Title'] }}</strong>
-            @if(!empty($lesson['Video URL']))
-              <br>
-              <a href="{{ $lesson['Video URL'] }}" target="_blank" class="text-blue-600 underline">Watch Video</a>
-            @endif
-
-            {{-- Quizzes for this lesson --}}
-            @foreach($quizzes->filter(function($quiz) use ($lesson) {
-                if (!isset($quiz['Lesson'])) return false;
-                foreach ($quiz['Lesson'] as $l) {
-                    if (isset($l['id']) && $l['id'] == $lesson['id']) {
-                        return true;
-                    }
-                }
-                return false;
-            }) as $quiz)
-              <div class="ml-4 mt-2 p-2 border rounded bg-gray-50">
-                <strong>Quiz: {{ $quiz['Name'] }}</strong>
-                <ul class="list-disc ml-4">
-                  {{-- Questions for this quiz --}}
-                  @foreach($questions->filter(function($question) use ($quiz) {
-                      if (!isset($question['Quiz'])) return false;
-                      foreach ($question['Quiz'] as $q) {
-                          if (isset($q['id']) && $q['id'] == $quiz['id']) {
-                              return true;
-                          }
-                      }
-                      return false;
-                  }) as $question)
-                    <li class="mt-2">
-                      <span>{{ $question['Question'] }}</span>
-                      @if($question['Type'] == 'mcq')
-                        <ul>
-                          @foreach(explode(';', $question['Options'] ?? '') as $opt)
-                            <li>
-                              <input type="radio" name="q{{ $question['id'] }}">
-                              {{ trim($opt) }}
-                            </li>
-                          @endforeach
-                        </ul>
-                      @elseif($question['Type'] == 'fill_in_blank')
-                        <input type="text" name="q{{ $question['id'] }}" class="border p-1">
-                      @endif
-                    </li>
-                  @endforeach
-                </ul>
-              </div>
-            @endforeach
-
-          </li>
-        @endforeach
-      </ul>
+{{-- Payment form at the top if not yet paid --}}
+@if($course['Price'] > 0 && !($userHasAccess ?? false))
+    @if($paymentPendingOrRejected)
+        <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4">
+            We are processing your payment. Please wait for admin approval.<br>
+            In the meantime, enjoy our free courses!
+        </div>
+    @else
+    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 my-4 rounded">
+        <h3 class="font-bold mb-2">Unlock This Course</h3>
+        <form action="{{ route('courses.pay', $course['id']) }}" method="POST" id="payment-form">
+            @csrf
+            <div class="mb-2">
+                <label class="block">Payment Method</label>
+                <select name="payment_method" required class="border rounded p-1 w-full">
+                    <option value="">Select</option>
+                    <option value="Bkash">bKash</option>
+                    <option value="Nagad">Nagad</option>
+                    <option value="Rocket">Rocket</option>
+                </select>
+            </div>
+            <div class="mb-2">
+                <label class="block">Sender Number</label>
+                <input type="text" name="sender_number" required class="border rounded p-1 w-full">
+            </div>
+            <div class="mb-2">
+                <label class="block">Transaction ID</label>
+                <input type="text" name="transaction_id" required class="border rounded p-1 w-full">
+            </div>
+            <input type="hidden" name="course_title" value="{{ $course['Title'] }}">
+            <input type="hidden" name="price" value="{{ $course['Price'] }}">
+            <button type="submit" class="btn btn-primary mt-2 w-full">Submit Payment</button>
+        </form>
+        <p class="mt-2 text-xs">After submitting, your access will be approved by admin.</p>
     </div>
-  @endforeach
+    @endif
+@endif
+
+{{-- Only show modules if user has access (or course is free) --}}
+@if($course['Price'] == 0 || ($userHasAccess ?? false))
+    <h2 class="text-xl font-semibold mt-6">Modules</h2>
+    @foreach($modules as $module)
+        @php
+            $moduleIndex = $modules->search(fn($m) => $m['id'] == $module['id']);
+            $prevModule = $moduleIndex > 0 ? $modules[$moduleIndex - 1] : null;
+            $prevModuleCompleted = !$prevModule || in_array($prevModule['id'], $completedModuleIds ?? []);
+            $moduleLessonList = $lessons->filter(fn($l) =>
+                isset($l['Parent']) && collect($l['Parent'])->pluck('id')->contains($module['id'])
+            )->values();
+        @endphp
+
+        <div class="mb-4 p-2 border rounded">
+            <h3 class="font-bold">{{ $module['Title'] }}</h3>
+            @if(!$prevModuleCompleted)
+                <div class="text-yellow-700 bg-yellow-100 p-2 rounded my-2">
+                    Complete the previous module to unlock this module.
+                </div>
+            @else
+                <ul class="list-disc ml-4">
+                    @foreach($moduleLessonList as $lesson)
+                        @include('courses._lesson', [
+                            'lesson' => $lesson,
+                            'moduleLessonList' => $moduleLessonList,
+                            'lockLessonsUntilPreviousComplete' => $lockLessonsUntilPreviousComplete,
+                            'requireAdminApproval' => $requireAdminApproval,
+                            'completedLessonIds' => $completedLessonIds,
+                            'quizzes' => $quizzes,
+                            'questions' => $questions,
+                            'completedQuizIds' => $completedQuizIds,
+                        ])
+                    @endforeach
+                </ul>
+            @endif
+        </div>
+    @endforeach
+@endif
+
 @endsection
+

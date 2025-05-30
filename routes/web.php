@@ -14,6 +14,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tasks/{id}/complete', [CourseController::class, 'completeTask']);
 });
 
+Route::post('lessons/{lesson}/complete', [App\Http\Controllers\LessonController::class, 'completeLesson'])->name('lessons.complete');
+Route::post('quizzes/{quiz}/submit', [App\Http\Controllers\QuizController::class, 'submit'])->name('quizzes.submit');
+
+Route::post('/courses/{id}/pay', [\App\Http\Controllers\PaymentController::class, 'submit'])->name('courses.pay');
+
 
 Route::get('/', function () {
     return view('welcome');

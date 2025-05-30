@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->unsignedBigInteger('lesson_id');
             $table->enum('status',['pending','completed'])->default('pending');
+            $table->decimal('points', 8, 2)->default(0);
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();
 
