@@ -26,6 +26,19 @@ class CourseController extends Controller
     return view('courses.index', compact('courses'));
     }
 
+    public function explore(BaserowService $baserow)
+    {
+
+   $courses = collect($baserow->fetch('content'))
+    ->filter(function($row) {
+        return in_array('course', $row['Type'] ?? []);
+    })
+    ->values();
+
+    // Pass the filtered list to the Blade view
+    return view('explore', compact('courses'));
+    }
+
     public function show($id, BaserowService $baserow)
     {
         $course = $baserow->find('content', $id);

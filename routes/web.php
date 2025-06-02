@@ -20,6 +20,14 @@ Route::post('quizzes/{quiz}/submit', [App\Http\Controllers\QuizController::class
 Route::post('/courses/{id}/pay', [\App\Http\Controllers\PaymentController::class, 'submit'])->name('courses.pay');
 
 
+// Route::get('/explore', [CourseController::class, 'explore'])->name('welcome');
+Route::get('/explore', [CourseController::class, 'explore'])->name('explore');
+
+// Route::get('/explore', function () {
+//     return view('explore');
+// });
+
+
 Route::get('/', function () {
     return view('welcome');
 });
