@@ -27,10 +27,11 @@ Route::get('/explore', [CourseController::class, 'explore'])->name('explore');
 //     return view('explore');
 // });
 
+Route::get('/', [CourseController::class, 'explore'])->name('explore');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
