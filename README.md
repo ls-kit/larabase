@@ -83,9 +83,12 @@ sudo /etc/init.d/mariadb start
 sudo mysqld_safe --skip-grant-tables &
 mysql -u root
 
+sudo mysql
+
+
 # --- In the MariaDB prompt, enter these SQL commands ---
 FLUSH PRIVILEGES;
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'yourpassword';
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
 FLUSH PRIVILEGES;
 EXIT;
 
@@ -96,7 +99,7 @@ sudo /etc/init.d/mariadb restart
 mysql -u root -p
 # (Enter yourpassword when prompted)
 # --- In the MariaDB prompt, enter: ---
-CREATE DATABASE your_db_name;
+CREATE DATABASE larabase;
 
 # 6. Update Laravel .env file:
 # (Set these variables in your .env file)
