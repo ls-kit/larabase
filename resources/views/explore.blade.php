@@ -1,5 +1,9 @@
 @extends('layouts.public')
 @section('content')
+
+@include('partials.login-modal')
+
+
   
 <div class="bg-gradient-to-br from-primary-dark via-secondary to-primary font-sans">
 <!-- Hero Section: Earn While You Learn -->
@@ -49,6 +53,17 @@
         🎓 Start Student Program (Free)
       </button>
     </div>
+
+<button onclick="document.getElementById('loginModal').classList.remove('hidden')" class="bg-blue-500 text-white px-4 py-2 rounded">
+    Login
+</button>
+<script>
+  window.addEventListener('click', function(e) {
+    const modal = document.getElementById('loginModal');
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+</script>
+
 
     <!-- Next Achievement -->
     <div class="mt-6 flex justify-center" data-aos="fade-up" data-aos-delay="900">
