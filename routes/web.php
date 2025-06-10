@@ -21,16 +21,16 @@ Route::post('/courses/{id}/pay', [\App\Http\Controllers\PaymentController::class
 
 
 // Route::get('/explore', [CourseController::class, 'explore'])->name('welcome');
-Route::get('/explore', [CourseController::class, 'explore'])->name('explore');
+Route::get('/', [CourseController::class, 'explore'])->name('explore');
 
 // Route::get('/explore', function () {
 //     return view('explore');
 // });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/dashboard', function () {
     return view('dashboard');
