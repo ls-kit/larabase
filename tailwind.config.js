@@ -11,9 +11,12 @@ export default {
 
     theme: {
         extend: {
+            // fontFamily: {
+            //     sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            // },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-            },
+        sans: ['"Hind Siliguri"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
             colors: {
           primary: '#005f73',
           secondary: '#0a9396',

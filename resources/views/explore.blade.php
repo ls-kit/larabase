@@ -1,5 +1,10 @@
 @extends('layouts.public')
 @section('content')
+
+
+@include('partials.auth-modal')
+
+
   
 <div class="bg-gradient-to-br from-primary-dark via-secondary to-primary font-sans">
 <!-- Hero Section: Earn While You Learn -->
@@ -49,6 +54,39 @@
         🎓 Start Student Program (Free)
       </button>
     </div>
+
+<button onclick="document.getElementById('authModal').classList.remove('hidden')" class="bg-indigo-600 text-white px-4 py-2 rounded">
+    Login/Register
+</button>
+<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    Logout
+</a>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
+
+
+<script>
+function switchTab(tab) {
+    document.getElementById('loginTab').classList.add('hidden');
+    document.getElementById('registerTab').classList.add('hidden');
+    document.getElementById(tab).classList.remove('hidden');
+
+    document.getElementById('loginTabBtn').classList.remove('border-blue-500', 'text-black');
+    document.getElementById('registerTabBtn').classList.remove('border-blue-500', 'text-black');
+
+    if (tab === 'loginTab') {
+        document.getElementById('loginTabBtn').classList.add('border-blue-500', 'text-black');
+        document.getElementById('registerTabBtn').classList.add('text-gray-500');
+    } else {
+        document.getElementById('registerTabBtn').classList.add('border-blue-500', 'text-black');
+        document.getElementById('loginTabBtn').classList.add('text-gray-500');
+    }
+}
+</script>
+
+
 
     <!-- Next Achievement -->
     <div class="mt-6 flex justify-center" data-aos="fade-up" data-aos-delay="900">

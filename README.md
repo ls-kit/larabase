@@ -69,3 +69,48 @@ flowchart TD
   R --> S[Progress Model -> local DB]
   S --> R
   R --> P
+
+
+  ## Mariadb DB setup:
+  # 1. Install MariaDB (if not installed)
+sudo apt-get update
+sudo apt-get install mariadb-server -y
+
+# 2. Start MariaDB
+sudo /etc/init.d/mariadb start
+
+# 3. Set root password (each new workspace)
+sudo mysqld_safe --skip-grant-tables &
+mysql -u root
+
+sudo mysql
+
+
+# --- In the MariaDB prompt, enter these SQL commands ---
+FLUSH PRIVILEGES;
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'root';
+FLUSH PRIVILEGES;
+EXIT;
+
+# 4. Restart MariaDB
+sudo /etc/init.d/mariadb restart
+
+# 5. Create your database
+mysql -u root -p
+# (Enter yourpassword when prompted)
+# --- In the MariaDB prompt, enter: ---
+CREATE DATABASE larabase;
+
+# 6. Update Laravel .env file:
+# (Set these variables in your .env file)
+# DB_DATABASE=your_db_name
+# DB_USERNAME=root
+# DB_PASSWORD=yourpassword
+
+# 7. Clear Laravel config cache
+php artisan config:clear
+
+# 8. Run migrations (optional)
+php artisan migrate
+
+  
