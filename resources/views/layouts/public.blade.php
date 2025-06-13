@@ -173,12 +173,18 @@ setInterval(() => {
   </div>
 </div>
 
+
+{{-- Our footer credit --}}
+        @include('partials.footer_credit')  
+
 <!-- Add before </body> -->
 <button id="backToTop" class="fixed bottom-10 mb-10 right-8 p-3 bg-highlight/90 text-primary-dark rounded-full shadow-lg hover:bg-yellow-600 transition-all opacity-0 invisible">
   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
   </svg>
 </button>
+
+
 <script>
 $(window).scroll(function() {
   if ($(this).scrollTop() > 300) {

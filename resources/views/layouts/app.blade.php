@@ -38,6 +38,9 @@
         </div>
 
 
+        {{-- Our footer credit --}}
+        @include('partials.footer_credit')  
+
 
         <script>
         document.addEventListener('mousemove', function(e) {

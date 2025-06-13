@@ -55,15 +55,7 @@
       </button>
     </div>
 
-<button onclick="document.getElementById('authModal').classList.remove('hidden')" class="bg-indigo-600 text-white px-4 py-2 rounded">
-    Login/Register
-</button>
-<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-    Logout
-</a>
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
+
 
 
 
@@ -179,75 +171,181 @@ function switchTab(tab) {
 
 
 
-<div class="max-w-7xl mx-auto px-4 py-12">
+
+<div class="max-w-7xl mx-auto px-4 py-12 overflow-hidden">
     <!-- Section Header -->
-    <div class="text-center mb-12">
+    <div class="text-center mb-12" data-aos="fade-up">
         <h2 class="text-2xl md:text-3xl font-bold text-center text-neon mb-6">Our Featured Courses</h2>
         <p class="text-center text-gray-300 max-w-2xl mx-auto mb-12">
             Enhance your skills with our carefully designed courses
         </p>
     </div>
 
-    <!-- Courses Grid -->
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 justify-items-center">
-        @foreach($courses as $course)
-        <div class="w-full max-w-xs bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-l-4" style="border-color: #ee9b00;">
-            <div class="h-full flex flex-col">
-                <!-- Course Image -->
-                <div class="h-40 flex items-center justify-center" style="background-color: #d4f1f4;">
-                    <svg class="w-12 h-12" style="color: #0a9396;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                </div>
-                
-                <!-- Course Content -->
-                <div class="p-4 flex-grow">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <span class="inline-block px-2 py-1 rounded-full text-xs font-semibold mb-2" style="background-color: #94d2bd; color: #003f43;">
-                                {{ $course['Price'] > 0 ? 'Paid' : 'Free' }}
-                            </span>
-                            <a target="_blank" href="{{ url('/courses/'.$course['id']) }}" class="text-lg font-bold hover:underline block mb-1" style="color: #005f73;">
-                                {{ $course['Title'] }}
-                            </a>
+    <!-- Courses Carousel Container -->
+    <div class="relative">
+        <!-- Navigation Arrows -->
+        <button class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md transform transition hover:scale-110 ml-2"
+                onclick="scrollCarousel(-1)">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        
+        <button class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md transform transition hover:scale-110 mr-2"
+                onclick="scrollCarousel(1)">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+
+        <!-- Courses Carousel -->
+        <div id="courses-carousel" class="flex overflow-x-hidden pb-8 snap-x snap-mandatory scrollbar-hide space-x-6 px-2">
+            @foreach($courses as $course)
+            <div class="flex-shrink-0 w-72 snap-center" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2 h-full flex flex-col border-t-4" style="border-color: #ee9b00;">
+                    <!-- Course Image -->
+                    <div class="h-40 flex items-center justify-center relative" style="background-color: #d4f1f4;">
+                        <svg class="w-12 h-12" style="color: #0a9396;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                        
+                        <!-- Points Badge -->
+                        <div class="absolute top-3 right-3 bg-yellow-400 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold shadow-md">
+                            {{ $course['Lesson Points'] ?? 0 }}
                         </div>
                     </div>
                     
-                    <p class="text-gray-600 text-sm mb-3 line-clamp-2">{{ $course['Content'] }}</p>
-                    
-                    <div class="flex items-center text-xs mb-2">
-                        <svg class="w-3 h-3 mr-1" style="color: #ee9b00;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Quiz: {{ $course['Has Quiz'] ? 'Yes' : 'No' }}</span>
-                    </div>
-                </div>
-                
-                <!-- Footer -->
-                <div class="px-4 pb-4">
-                    <div class="flex items-center justify-between">
-                        <span class="text-lg font-bold" style="color: #005f73;">
-                            {{ $course['Price'] > 0 ? '$'.$course['Price'] : 'Free' }}
-                        </span>
-                        <a href="{{ url('/courses/'.$course['id']) }}" class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-300" style="background-color: #ee9b00; color: white; hover:bg-opacity-90">
-                            {{ $course['Price'] > 0 ? 'Enroll' : 'Start' }}
+                    <!-- Course Content -->
+                    <div class="p-5 flex-grow">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="inline-block px-2 py-1 rounded-full text-xs font-semibold mb-2" style="background-color: #94d2bd; color: #003f43;">
+                                {{ $course['Price'] > 0 ? 'Paid' : 'Free' }}
+                            </span>
+                            <span class="text-xs flex items-center">
+                                <svg class="w-3 h-3 mr-1" style="color: #ee9b00;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ $course['Has Quiz'] ? 'Has Quiz' : 'No Quiz' }}
+                            </span>
+                        </div>
+                        
+                        <a target="_blank" href="{{ url('/courses/'.$course['id']) }}" class="text-lg font-bold hover:underline block mb-2" style="color: #005f73;">
+                            {{ $course['Title'] }}
                         </a>
+                        
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-3">{{ $course['Content'] }}</p>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="px-5 pb-5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-bold" style="color: #005f73;">
+                                {{ $course['Price'] > 0 ? '৳'.$course['Price'] : 'Free' }}
+                            </span>
+                            <a href="{{ url('/courses/'.$course['id']) }}" 
+                               class="px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300 flex items-center" 
+                               style="background-color: #ee9b00; color: white;">
+                                {{ $course['Price'] > 0 ? 'Enroll Now' : 'Start Free' }}
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
-        @endforeach
+        
+        <!-- 3-Dot Pagination Indicator -->
+        <div class="flex justify-center mt-6 space-x-2">
+            @php $dotCount = min(3, ceil(count($courses)/4)); @endphp
+            @for($i = 0; $i < $dotCount; $i++)
+            <button onclick="scrollToSlide({{ $i }})" 
+                    class="w-3 h-3 rounded-full bg-gray-300 transition-all duration-300 dot-indicator" 
+                    data-index="{{ $i }}"></button>
+            @endfor
+        </div>
     </div>
 
     <!-- View All Button -->
     @if(count($courses) > 4)
-    <div class="text-center mt-10">
-        <a href="#" class="inline-block px-6 py-2 rounded-lg font-medium transition-colors duration-300" style="background-color: #005f73; color: white; hover:bg-opacity-90">
-            View All Courses
+    <div class="text-center mt-10" data-aos="fade-up">
+        <a href="#" class="inline-block px-6 py-3 rounded-lg font-medium transition-colors duration-300 hover:shadow-md" style="background-color: #005f73; color: white;">
+            View All Courses →
         </a>
     </div>
     @endif
 </div>
+
+<script>
+    let currentSlide = 0;
+    const slidesPerDot = 4; // Number of cards to scroll per dot click
+    const carousel = document.getElementById('courses-carousel');
+    const dots = document.querySelectorAll('.dot-indicator');
+    
+    function scrollCarousel(direction) {
+        const cardWidth = 288; // 72rem = 288px
+        const gap = 24; // space-x-6 = 24px
+        const scrollAmount = (cardWidth + gap) * direction * slidesPerDot;
+        
+        carousel.scrollBy({
+            left: scrollAmount,
+            behavior: 'smooth'
+        });
+        
+        updateCurrentSlide(direction);
+    }
+    
+    function scrollToSlide(slideIndex) {
+        const cardWidth = 288;
+        const gap = 24;
+        const scrollTo = (cardWidth + gap) * slidesPerDot * slideIndex;
+        
+        carousel.scrollTo({
+            left: scrollTo,
+            behavior: 'smooth'
+        });
+        
+        currentSlide = slideIndex;
+        updateDots();
+    }
+    
+    function updateCurrentSlide(direction) {
+        currentSlide = Math.max(0, Math.min(currentSlide + direction, dots.length - 1));
+        updateDots();
+    }
+    
+    function updateDots() {
+        dots.forEach((dot, index) => {
+            if(index === currentSlide) {
+                dot.classList.add('bg-blue-500', 'w-6');
+                dot.classList.remove('bg-gray-300', 'w-3');
+            } else {
+                dot.classList.add('bg-gray-300', 'w-3');
+                dot.classList.remove('bg-blue-500', 'w-6');
+            }
+        });
+    }
+    
+    // Initialize AOS
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        // Set first dot as active initially
+        if(dots.length > 0) {
+            dots[0].classList.add('bg-blue-500', 'w-6');
+        }
+    });
+</script>
+
+
+
+
+
 
 
 
@@ -266,7 +364,7 @@ function switchTab(tab) {
       Your <span class="text-highlight">Earning</span> Adventure
     </h2>
     <p class="text-center text-gray-300 max-w-2xl mx-auto mb-12">
-      Every step unlocks new rewards in your SkillForge dashboard
+      Every step unlocks new rewards in your ChestaAcademy dashboard
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
@@ -361,7 +459,7 @@ function switchTab(tab) {
         </svg>
       </button>
       <p class="text-gray-400 text-sm">
-        Already <span class="text-highlight">12,500+</span> students earning through SkillForge
+        Already <span class="text-highlight">12,500+</span> students earning through ChestaAcademy
       </p>
     </div>
   </div>
@@ -575,7 +673,7 @@ function switchTab(tab) {
             <span class="text-highlight text-sm font-bold">৳18,700/month</span>
           </div>
           <p class="text-gray-300 text-sm">
-            "Landed 3 regular clients through SkillForge projects!"
+            "Landed 3 regular clients through ChestaAcademy projects!"
           </p>
         </div>
       </div>
@@ -769,7 +867,7 @@ function switchTab(tab) {
       </div>
     </div>
     <div class="container mx-auto px-4 text-center mt-6 text-gray-500">
-      &copy; 2025 SkillForge Pro. All rights reserved.
+      &copy; 2025 ChestaAcademy Pro. All rights reserved.
     </div>
   </footer>
 

@@ -6,9 +6,10 @@
       <div class="flex items-center gap-2">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
           <x-application-logo class="block h-10 w-auto fill-current text-blue-700" />
-          <span class="font-bold text-lg text-blue-700 tracking-wide hidden sm:inline">EduQuiz</span>
+          {{-- <span class="font-bold text-lg text-blue-700 tracking-wide hidden sm:inline">Chesta Academy</span> --}}
         </a>
         <a href="{{ route('courses.index') }}" class="ml-6 px-3 py-2 rounded-full text-sm font-semibold text-blue-700 hover:bg-blue-50 transition">All Courses</a>
+        <a href="/" class="ml-6 px-3 py-2 rounded-full text-sm font-semibold text-blue-700 hover:bg-blue-50 transition">Front Page</a>
       </div>
 
       <!-- User Menu -->

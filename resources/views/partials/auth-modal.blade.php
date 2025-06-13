@@ -1,4 +1,3 @@
-
 <div id="authModal" class="fixed inset-0 hidden bg-primary-dark/75 backdrop-blur-sm overflow-y-auto flex items-start md:items-center justify-center p-4 z-50">
   <div id="modalContent" class="relative bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto p-6 transition-transform transform scale-95 opacity-0">
     <!-- Close Button -->
@@ -10,9 +9,20 @@
       <button class="tab-button flex-1 py-2 font-bold text-gray-500" data-tab="register">Register</button>
     </div>
 
+@if(auth()->check())
+        {{-- Already logged in --}}
+        <div class="text-center">
+            <h2 class="text-xl font-bold text-green-700 mb-3">You're already logged in!</h2>
+            <p class="text-gray-700 mb-4">Hello, {{ auth()->user()->name }}.</p>
+            <a href="{{ url('/dashboard') }}" class="inline-block px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded">
+                Go to Dashboard
+            </a>
+        </div>
+    @else
+
 <!-- Login Form -->
 <div id="login" class="tab-content">
-  <h3 class="text-2xl font-bold text-primary mb-4">Welcome Back!</h3>
+  <h3 class="text-2xl font-bold text-primary mb-4">Welcome Back! </h3>
 
   @if(session('status'))
     <p class="text-green-500 mb-4">{{ session('status') }}</p>
@@ -64,7 +74,7 @@
     <button type="submit" class="w-full bg-highlight text-white py-3 rounded-lg font-bold">Create Account</button>
   </form>
 </div>
-
+ @endif
 
 </div>
 </div>
@@ -72,8 +82,14 @@
 <!-- JS: jQuery + Modal Logic -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+
+
+
 $(function(){
   // Open modal
+
+
   $('.auth-trigger').click(function(){
     $('#authModal').removeClass('hidden');
     $('#modalContent').removeClass('scale-95 opacity-0').addClass('scale-100 opacity-100');
@@ -99,3 +115,5 @@ $(function(){
   });
 });
 </script>
+
+   
