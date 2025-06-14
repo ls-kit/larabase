@@ -113,4 +113,16 @@ php artisan config:clear
 # 8. Run migrations (optional)
 php artisan migrate
 
-  
+
+## sound integrate
+@extends('layouts.app')
+
+@section('content')
+<div x-data="soundSystem()" x-init="init">
+    @include('partials.music-system')
+    
+    <!-- Your page content here -->
+    
+    <button @click="toggleSound">Toggle Sound</button>
+</div>
+@endsection

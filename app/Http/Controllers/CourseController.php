@@ -148,6 +148,8 @@ class CourseController extends Controller
 
 
 
+
+
     $userPayment = null;
     $userHasAccess = false;
     $paymentPendingOrRejected = false;
@@ -184,6 +186,49 @@ class CourseController extends Controller
 
 
 
+         // ===== NEW PROGRESS CALCULATION CODE =====
+        $moduleProgress = [];
+        $lessonProgressData = [];
+
+        // Calculate module progress
+        foreach ($modules as $module) {
+            $moduleLessonIds = $lessons->filter(function($lesson) use ($module) {
+                return isset($lesson['Parent']) && 
+                       collect($lesson['Parent'])->pluck('id')->contains($module['id']);
+            })->pluck('id')->toArray();
+
+            if (empty($moduleLessonIds)) {
+                $moduleProgress[$module['id']] = 0;
+                continue;
+            }
+
+            $completedCount = count(array_intersect($moduleLessonIds, $completedLessonIds));
+            $moduleProgress[$module['id']] = round(($completedCount / count($moduleLessonIds)) * 100);
+        }
+
+        // Calculate lesson progress
+        foreach ($lessons as $lesson) {
+            $lessonQuizIds = $quizzes->filter(function($quiz) use ($lesson) {
+                if (!isset($quiz['Lesson'])) return false;
+                foreach ($quiz['Lesson'] as $l) {
+                    if (isset($l['id']) && $l['id'] == $lesson['id']) {
+                        return true;
+                    }
+                }
+                return false;
+            })->pluck('id')->toArray();
+
+            if (empty($lessonQuizIds)) {
+                $lessonProgressData[$lesson['id']] = 0;
+                continue;
+            }
+
+            $completedCount = count(array_intersect($lessonQuizIds, $completedQuizIds));
+            $lessonProgressData[$lesson['id']] = round(($completedCount / count($lessonQuizIds)) * 100);
+        }
+        // ===== END NEW PROGRESS CALCULATION =====
+
+
 // dd($userPayment);
         return view('courses.show', compact(
             'course',
@@ -198,7 +243,9 @@ class CourseController extends Controller
             'completedModuleIds',
             'userPayment',
             'userHasAccess',
-            'paymentPendingOrRejected'
+            'paymentPendingOrRejected',
+            'moduleProgress',         
+            'lessonProgressData'      
         ));
     }
 

@@ -1,11 +1,8 @@
 @extends('layouts.public')
 @section('content')
 
-
 @include('partials.auth-modal')
 
-
-  
 <div class="bg-gradient-to-br from-primary-dark via-secondary to-primary font-sans">
 <!-- Hero Section: Earn While You Learn -->
 <!-- Hero Section: Earn While You Learn -->
@@ -486,21 +483,21 @@ function switchTab(tab) {
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="bg-white/5 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition-all" data-aos="fade-up">
           <h3 class="text-xl font-semibold text-neon mb-2">Code Jam #5</h3>
-          <p class="text-gray-300 mb-4">Jun 5, 2025 – Live React sprint</p>
+          <p class="text-gray-300 mb-4">Jun 5, 2026 – Live React sprint</p>
           <button class="auth-trigger bg-highlight text-primary-dark px-4 py-2 rounded-full text-sm hover:shadow-neon transition-all">
             RSVP Now
           </button>
         </div>
         <div class="bg-white/5 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition-all" data-aos="fade-up" data-aos-delay="100">
           <h3 class="text-xl font-semibold text-neon mb-2">Freelance AMA</h3>
-          <p class="text-gray-300 mb-4">Jun 12, 2025 – Ask top mentors</p>
+          <p class="text-gray-300 mb-4">Jun 12, 2026 – Ask top mentors</p>
           <button class="auth-trigger bg-highlight text-primary-dark px-4 py-2 rounded-full text-sm hover:shadow-neon transition-all">
             RSVP Now
           </button>
         </div>
         <div class="bg-white/5 p-6 rounded-2xl backdrop-blur-sm hover:bg-white/10 transition-all" data-aos="fade-up" data-aos-delay="200">
           <h3 class="text-xl font-semibold text-neon mb-2">Hackathon Prep</h3>
-          <p class="text-gray-300 mb-4">Jun 19, 2025 – Build with peers</p>
+          <p class="text-gray-300 mb-4">Jun 19, 2026 – Build with Chesta Tools</p>
           <button class="auth-trigger bg-highlight text-primary-dark px-4 py-2 rounded-full text-sm hover:shadow-neon transition-all">
             RSVP Now
           </button>
@@ -512,17 +509,67 @@ function switchTab(tab) {
 
 
   <!-- Partner & Platform Logos -->
-  <section class="py-16 bg-black/20 backdrop-blur-sm">
-    <div class="container mx-auto px-4">
-      <h2 class="text-2xl font-bold text-center text-neon mb-8">Trusted By</h2>
-      <div class="flex flex-wrap justify-center items-center gap-8">
-        <img src="logo-upwork.png" class="h-8 opacity-60 hover:opacity-100 transition" alt="Upwork">
-        <img src="logo-fiverr.png" class="h-8 opacity-60 hover:opacity-100 transition" alt="Fiverr">
-        <img src="logo-freelancer.png" class="h-8 opacity-60 hover:opacity-100 transition" alt="Freelancer">
-        <img src="logo-github.png" class="h-8 opacity-60 hover:opacity-100 transition" alt="GitHub">
+  <section class="py-16 bg-gray-900/50 backdrop-blur-sm">
+  <div class="container mx-auto px-4">
+    <h2 class="text-2xl font-bold text-center text-blue-400 mb-12">Trusted Development Partner</h2>
+    <div class="flex flex-wrap justify-center items-center gap-12">
+      <!-- Main Logo -->
+      <img src="https://imgs.search.brave.com/MPT5l85Z_0FfdFlbhfeskKhpEHocIhfGdMOYpaW6Kvw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/aWNvbnNjb3V0LmNv/bS9pY29uL2ZyZWUv/cG5nLTI1Ni9mcmVl/LXVwd29yay1sb2dv/LWljb24tZG93bmxv/YWQtaW4tc3ZnLXBu/Zy1naWYtZmlsZS1m/b3JtYXRzLS1icmFu/ZC1jb21wYW55LWJy/YW5kcy1wYWNrLWxv/Z29zLWljb25zLTIy/ODQ4NTUucG5nP2Y9/d2VicCZ3PTEyOA" 
+           class="h-8 opacity-80 hover:opacity-100 transition hover:scale-105" 
+           alt="Upwork"
+           title="Top Rated Plus on Upwork">
+      
+      <!-- Freelance Platforms -->
+      <img src="https://imgs.search.brave.com/bYLvijNGNTB6OQ_XqNtrjRYBPyTdJnAvKpLVRT0vG3E/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc2Vla2xvZ28u/Y29tL2xvZ28tcG5n/LzMyLzEvZnJlZWxh/bmNlci1jb20tbG9n/by1wbmdfc2Vla2xv/Z28tMzIwNTE4LnBu/Zw" 
+           class="h-7 opacity-80 hover:opacity-100 transition hover:scale-105" 
+           alt="Fiverr"
+           title="Pro Verified on Fiverr">
+      
+      <img src="https://imgs.search.brave.com/bYLvijNGNTB6OQ_XqNtrjRYBPyTdJnAvKpLVRT0vG3E/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMuc2Vla2xvZ28u/Y29tL2xvZ28tcG5n/LzMyLzEvZnJlZWxh/bmNlci1jb20tbG9n/by1wbmdfc2Vla2xv/Z28tMzIwNTE4LnBu/Zw" 
+           class="h-8 opacity-80 hover:opacity-100 transition hover:scale-105" 
+           alt="Freelancer"
+           title="Preferred Freelancer">
+      
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/2048px-Octicons-mark-github.svg.png" 
+           class="h-8 opacity-80 hover:opacity-100 transition hover:scale-105" 
+           alt="GitHub"
+           title="Open Source Contributors">
+      
+      <!-- Additional Platforms -->
+      <img src="https://fitsmallbusiness.com/wp-content/uploads/2023/03/Logo_Toptal.png" 
+           class="h-6 opacity-80 hover:opacity-100 transition hover:scale-105" 
+           alt="Toptal"
+           title="Toptal Network">
+      
+      <img src="https://imgs.search.brave.com/NJKPRvv06mQ9RlDk6e6QMPQdLscdcSwP5F1HZNfgE6Y/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pMC53/cC5jb20vc2FyYS1y/YW1vcy5jb20vd3At/Y29udGVudC91cGxv/YWRzLzIwMjAvMDQv/cGVvcGxlLXBlci1o/b3VyLWxvZ28tcG5n/LTEucG5nP2ZpdD0z/MDAsMjAwJnNzbD0x" 
+           class="h-7 opacity-80 hover:opacity-100 transition hover:scale-105" 
+           alt="PeoplePerHour"
+           title="Top Rated on PeoplePerHour">
+      
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/25/Truelancerlogo.png" 
+           class="h-8 opacity-80 hover:opacity-100 transition hover:scale-105" 
+           alt="Truelancer"
+           title="Certified on Truelancer">
+    </div>
+
+    <!-- Achievement Badges -->
+    <div class="flex flex-wrap justify-center gap-6 mt-12">
+      <div class="flex items-center gap-2 bg-gray-800/50 px-4 py-2 rounded-full border border-blue-900/30">
+        <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+        </svg>
+        <span class="text-sm text-gray-300">4.9/5 (200+ Reviews)</span>
+      </div>
+      
+      <div class="flex items-center gap-2 bg-gray-800/50 px-4 py-2 rounded-full border border-blue-900/30">
+        <svg class="w-5 h-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <span class="text-sm text-gray-300">Verified Service Provider</span>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
 
 
